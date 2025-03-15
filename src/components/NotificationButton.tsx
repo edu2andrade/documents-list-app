@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "center",
 		borderRadius: 12,
-		backgroundColor: "#ff0000",
+		backgroundColor: "#3e82f3",
 	},
 	quantityText: {
 		color: "white",
