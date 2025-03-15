@@ -36,3 +36,10 @@ yarn-error.*
 *.tsbuildinfo
 
 app-example
+
+# Compiled code
+/ios
+/android
+
+# Personal notes
+notes.md

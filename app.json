@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "documents-list-app",
-    "slug": "documents-list-app",
+    "name": "documentslistapp",
+    "slug": "documentslistapp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -9,13 +9,15 @@
     "newArchEnabled": true,
     "scheme": "documentslistapp",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.documentslistapp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.documentslistapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"

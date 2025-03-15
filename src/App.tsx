@@ -1,30 +1,21 @@
-import { Assets as NavigationAssets } from '@react-navigation/elements';
-import { Asset } from 'expo-asset';
-import * as SplashScreen from 'expo-splash-screen';
-import * as React from 'react';
-import { Navigation } from './navigation';
-
-Asset.loadAsync([
-  ...NavigationAssets,
-  require('./assets/newspaper.png'),
-  require('./assets/bell.png'),
-]);
+import * as React from "react";
+import * as SplashScreen from "expo-splash-screen";
+import { AppNavigator } from "@/routes/app.navigator";
 
 SplashScreen.preventAutoHideAsync();
 
+const prefix = "documentslistapp://";
+
 export function App() {
-  return (
-    <Navigation
-      linking={{
-        enabled: 'auto',
-        prefixes: [
-          // Change the scheme to match your app's scheme defined in app.json
-          'helloworld://',
-        ],
-      }}
-      onReady={() => {
-        SplashScreen.hideAsync();
-      }}
-    />
-  );
+	return (
+		<AppNavigator
+			linking={{
+				enabled: true,
+				prefixes: [prefix],
+			}}
+			onReady={() => {
+				SplashScreen.hideAsync();
+			}}
+		/>
+	);
 }
