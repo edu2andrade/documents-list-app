@@ -7,3 +7,8 @@ export type DocsListType = {
 	UpdatedAt: string;
 	Version: string;
 };
+
+export type NewDocumentType = {
+	Title: string;
+	Version: string;
+};

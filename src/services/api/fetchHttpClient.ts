@@ -15,4 +15,20 @@ export class FetchHttpClient implements HttpClient {
 			ok: response.ok,
 		};
 	}
+
+	async post<T, D>(url: string, data: D, options?: { signal?: AbortSignal }): Promise<HttpResponse<T>> {
+		const response = await fetch(url, {
+			method: "POST",
+			signal: options?.signal,
+			body: JSON.stringify(data),
+		});
+
+		const responseData = (await response.json()) as T;
+
+		return {
+			data: responseData,
+			status: response.status,
+			ok: response.ok,
+		};
+	}
 }

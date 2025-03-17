@@ -6,6 +6,7 @@ import { DocumentsGrid } from "@/components/DocumentsGrid";
 import { ViewSelector } from "@/components/ViewSelector";
 import { SortDropdown, SortOption } from "@/components/SortDropdown";
 import { DocumentService, FetchHttpClient, DocsListType } from "@/services";
+import { AppFooter } from "@/components/AppFooter";
 
 export function Home() {
 	const [viewState, setViewState] = useState<"grid" | "list">("list");
@@ -75,6 +76,23 @@ export function Home() {
 		);
 	}, [viewState, sortedDocuments]);
 
+	const handleAddDocument = async (name: string, version: string) => {
+		try {
+			const httpClient = new FetchHttpClient();
+			const documentService = new DocumentService(httpClient);
+			const newDocument = {
+				Title: name,
+				Version: version,
+			};
+			const addedDocument = await documentService.addDocument(newDocument);
+			if (addedDocument) {
+				setDocsList(addedDocument); // This isn't returning the added document, but an entire new list...
+			}
+		} catch (error) {
+			console.error("Error adding document:", error);
+		}
+	};
+
 	return (
 		<View style={styles.container}>
 			<AppHeader />
@@ -85,6 +103,7 @@ export function Home() {
 				</View>
 				{isLoading ? <ActivityIndicator size="large" color="#3e82f3" /> : documentView}
 			</View>
+			<AppFooter onPress={handleAddDocument} />
 		</View>
 	);
 }
