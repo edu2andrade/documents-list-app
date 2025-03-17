@@ -1,14 +1,16 @@
-import { useState, useMemo } from "react";
-import { StyleSheet, View } from "react-native";
+import { useState, useMemo, useEffect } from "react";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { AppHeader } from "@/components/AppHeader";
-import { DocsList } from "data";
 import { DocumentsList } from "@/components/DocumentsList";
 import { DocumentsGrid } from "@/components/DocumentsGrid";
 import { ViewSelector } from "@/components/ViewSelector";
 import { SortDropdown, SortOption } from "@/components/SortDropdown";
+import { DocumentService, FetchHttpClient, DocsListType } from "@/services";
 
 export function Home() {
-	const [viewState, setViewState] = useState<"grid" | "list">("grid");
+	const [viewState, setViewState] = useState<"grid" | "list">("list");
+	const [docsList, setDocsList] = useState<DocsListType[]>([]);
+	const [isLoading, setIsLoading] = useState(true);
 	const [sortOption, setSortOption] = useState<SortOption>({
 		label: "Created (Newest first)",
 		value: "createdAt_desc",
@@ -22,8 +24,35 @@ export function Home() {
 		setSortOption(option);
 	};
 
+	useEffect(() => {
+		const abortController = new AbortController();
+		const signal = abortController.signal;
+
+		// Using the document service with dependency injection
+		const fetchDocuments = async () => {
+			try {
+				setIsLoading(true);
+				const httpClient = new FetchHttpClient();
+				const documentService = new DocumentService(httpClient);
+				const documents = await documentService.getDocuments(signal);
+
+				if (!signal.aborted) {
+					setDocsList(documents);
+				}
+			} catch (error) {
+				if (!signal.aborted) console.error(error);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		fetchDocuments();
+
+		return () => abortController.abort();
+	}, []);
+
 	const sortedDocuments = useMemo(() => {
-		const docs = [...DocsList];
+		const docs = [...docsList];
 
 		if (sortOption.value === "createdAt_asc") {
 			return docs.sort((a, b) => {
@@ -36,7 +65,7 @@ export function Home() {
 		}
 
 		return docs;
-	}, [sortOption]);
+	}, [sortOption, docsList]);
 
 	const documentView = useMemo(() => {
 		return viewState === "grid" ? (
@@ -54,7 +83,7 @@ export function Home() {
 					<SortDropdown onSortChange={handleSortChange} currentSort={sortOption} />
 					<ViewSelector toggleView={toggleView} viewState={viewState} />
 				</View>
-				{documentView}
+				{isLoading ? <ActivityIndicator size="large" color="#3e82f3" /> : documentView}
 			</View>
 		</View>
 	);
@@ -72,7 +101,7 @@ const styles = StyleSheet.create({
 		width: "100%",
 		justifyContent: "flex-start",
 		paddingHorizontal: 20,
-		paddingVertical: 20,
+		paddingTop: 20,
 		gap: 20,
 		backgroundColor: "#f6f6f6",
 	},

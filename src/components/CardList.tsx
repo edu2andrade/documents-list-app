@@ -1,7 +1,7 @@
 import { View, StyleSheet, Text } from "react-native";
-import { DocsListType } from "data";
 import { formatDate } from "@/utils";
 import { Ionicons } from "@expo/vector-icons";
+import { DocsListType } from "@/services";
 
 export function CardList({ document }: { document: DocsListType }) {
 	return (
@@ -36,8 +36,9 @@ export function CardList({ document }: { document: DocsListType }) {
 					</View>
 					<View style={styles.contentItemList}>
 						{document.Attachments.length > 0 &&
-							document.Attachments.map((attachment) => (
-								<Text key={attachment} style={styles.eachItem}>
+							// Filter out duplicated attachments with Set and reconvert them to array that can be mapped.
+							[...new Set(document.Attachments)].map((attachment, index) => (
+								<Text key={index} style={styles.eachItem}>
 									{attachment}
 								</Text>
 							))}
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		gap: 6,
-		maxWidth: "70%",
+		maxWidth: "60%",
 	},
 	h1: {
 		fontSize: 16,

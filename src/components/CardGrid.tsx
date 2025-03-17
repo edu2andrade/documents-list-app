@@ -1,5 +1,5 @@
 import { Text, View, StyleSheet } from "react-native";
-import { DocsListType } from "data";
+import { DocsListType } from "@/services";
 
 export const CardGrid = ({ document }: { document: DocsListType }) => {
 	return (

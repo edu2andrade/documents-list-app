@@ -1,5 +1,5 @@
 import { View, FlatList, StyleSheet, RefreshControl } from "react-native";
-import { DocsListType } from "data";
+import { DocsListType } from "@/services";
 import { CardList } from "@/components/CardList";
 import { useState } from "react";
 
