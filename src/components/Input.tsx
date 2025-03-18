@@ -1,7 +1,7 @@
 import { TextInput, StyleSheet, View, Text, TextInputProps } from "react-native";
 
 interface InputProps extends TextInputProps {
-	placeholder: string;
+	placeholder?: string;
 	label: string;
 }
 
@@ -9,14 +9,7 @@ export function Input({ placeholder, label, ...props }: InputProps) {
 	return (
 		<View style={styles.container}>
 			<Text style={styles.label}>{label}</Text>
-			<TextInput
-				style={styles.input}
-				placeholder={placeholder}
-				autoCapitalize="none"
-				autoCorrect={false}
-				returnKeyType="done"
-				{...props}
-			/>
+			<TextInput style={styles.input} placeholder={placeholder} autoCapitalize="none" autoCorrect={false} {...props} />
 		</View>
 	);
 }

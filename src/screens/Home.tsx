@@ -7,6 +7,9 @@ import { ViewSelector } from "@/components/ViewSelector";
 import { SortDropdown, SortOption } from "@/components/SortDropdown";
 import { DocumentService, FetchHttpClient, DocsListType } from "@/services";
 import { AppFooter } from "@/components/AppFooter";
+// import { WebSocketLogger } from "@/components/WebSocketLogger";
+import { useNotifications } from "@/contexts/NotificationsContext";
+import { useToast } from "@/contexts/ToastContext";
 
 export function Home() {
 	const [viewState, setViewState] = useState<"grid" | "list">("list");
@@ -16,6 +19,9 @@ export function Home() {
 		label: "Created (Newest first)",
 		value: "createdAt_desc",
 	});
+
+	const { addNotification, notifications } = useNotifications();
+	const { showToast } = useToast();
 
 	const toggleView = () => {
 		setViewState((prev) => (prev === "grid" ? "list" : "grid"));
@@ -88,14 +94,33 @@ export function Home() {
 			if (addedDocument) {
 				setDocsList(addedDocument); // This isn't returning the added document, but an entire new list...
 			}
+			// Add notification to the notification context
+			addNotification({ title: name, version });
+			showToast({
+				title: "Success",
+				description: "Document added successfully",
+				type: "success",
+				duration: 2000,
+			});
 		} catch (error) {
 			console.error("Error adding document:", error);
+			showToast({
+				title: "Error",
+				description: "Failed to add document",
+				type: "error",
+				duration: 2000,
+			});
 		}
 	};
+
+	useEffect(() => {
+		console.log("Notifications context:", notifications);
+	}, [notifications]);
 
 	return (
 		<View style={styles.container}>
 			<AppHeader />
+			{/* <WebSocketLogger /> */}
 			<View style={styles.content}>
 				<View style={styles.controlsRow}>
 					<SortDropdown onSortChange={handleSortChange} currentSort={sortOption} />

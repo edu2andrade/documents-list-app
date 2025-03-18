@@ -12,3 +12,11 @@ export type NewDocumentType = {
 	Title: string;
 	Version: string;
 };
+
+export type NotificationType = {
+	Timestamp: string;
+	UserID: string;
+	UserName: string;
+	DocumentID: string;
+	DocumentTitle: string;
+};
