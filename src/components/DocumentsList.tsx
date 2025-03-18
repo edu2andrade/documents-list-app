@@ -1,52 +1,52 @@
-import { View, FlatList, StyleSheet, RefreshControl } from "react-native";
-import { DocsListType } from "@/services";
-import { CardList } from "@/components/CardList";
-import { useState } from "react";
+import { View, FlatList, StyleSheet, RefreshControl } from 'react-native';
+import { DocsListType } from '@/services';
+import { CardList } from '@/components/CardList';
+import { useState } from 'react';
 
 interface DocumentsListProps {
-	documents: DocsListType[];
+  documents: DocsListType[];
 }
 
 export function DocumentsList({ documents }: DocumentsListProps) {
-	const [refreshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
-	const onRefresh = () => {
-		setRefreshing(true);
-		setTimeout(() => {
-			// TODO: Fetch new data
-			// Set Skip / Limit
-			console.log("Refreshed");
-			setRefreshing(false);
-		}, 2000);
-	};
+  const onRefresh = () => {
+    setRefreshing(true);
+    setTimeout(() => {
+      // TODO: Fetch new data
+      // Set Skip / Limit
+      console.log('Refreshed');
+      setRefreshing(false);
+    }, 2000);
+  };
 
-	const Items = ({ item }: { item: DocsListType }) => (
-		<View style={styles.items}>
-			<CardList document={item} />
-		</View>
-	);
+  const Items = ({ item }: { item: DocsListType }) => (
+    <View style={styles.items}>
+      <CardList document={item} />
+    </View>
+  );
 
-	return (
-		<View style={styles.container}>
-			<FlatList
-				data={documents}
-				keyExtractor={(item) => item.ID}
-				renderItem={Items}
-				style={styles.flatlist}
-				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-			/>
-		</View>
-	);
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={documents}
+        keyExtractor={(item) => item.ID}
+        renderItem={Items}
+        style={styles.flatlist}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-	items: {
-		marginVertical: 6,
-	},
-	flatlist: {
-		paddingHorizontal: 6,
-	},
+  container: {
+    flex: 1,
+  },
+  items: {
+    marginVertical: 6,
+  },
+  flatlist: {
+    paddingHorizontal: 6,
+  },
 });
