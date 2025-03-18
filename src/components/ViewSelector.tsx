@@ -9,7 +9,7 @@ export function ViewSelector({ toggleView, viewState }: ViewSelectorProps) {
   const indicatorStyle = viewState === 'grid' ? styles.GridIndicator : styles.ListIndicator;
 
   return (
-    <TouchableOpacity activeOpacity={0.5} onPress={toggleView} style={styles.button}>
+    <TouchableOpacity testID="view-selector" activeOpacity={0.5} onPress={toggleView} style={styles.button}>
       <Ionicons name="list-outline" size={20} color={viewState === 'list' ? '#3e82f3' : 'black'} />
       <Ionicons name="grid-outline" size={14} color={viewState === 'grid' ? '#3e82f3' : 'black'} />
       <View style={indicatorStyle} />

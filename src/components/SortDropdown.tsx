@@ -47,6 +47,7 @@ export function SortDropdown({ onSortChange, currentSort }: SortDropdownProps) {
             {sortOptions.map((option) => (
               <TouchableOpacity
                 key={option.value}
+                testID={`sort-option-${option.value}`}
                 style={[styles.optionItem, currentSort.value === option.value && styles.selectedOption]}
                 onPress={() => selectOption(option)}>
                 <Text style={[styles.optionText, currentSort.value === option.value && styles.selectedOptionText]}>
