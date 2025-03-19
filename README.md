@@ -1,65 +1,56 @@
-# Starter Template with React Navigation
+# Documents List App
 
-This is a minimal starter template for React Native apps using Expo and React Navigation.
-
-It includes the following:
-
-- Example [Native Stack](https://reactnavigation.org/docs/native-stack-navigator) with a nested [Bottom Tab](https://reactnavigation.org/docs/bottom-tab-navigator)
-- Web support with [React Native for Web](https://necolas.github.io/react-native-web/)
-- TypeScript support and configured for React Navigation
-- Automatic deep link and URL handling configuration
-- Expo [Development Build](https://docs.expo.dev/develop/development-builds/introduction/) with [Continuous Native Generation](https://docs.expo.dev/workflow/continuous-native-generation/)
-- Edge-to-edge configured on Android with [`react-native-edge-to-edge`](https://www.npmjs.com/package/react-native-edge-to-edge)
+A React Native app for listing documents.
 
 ## Getting Started
 
-1. Create a new project using this template:
+1. Start the server backend:
+```sh
+go run server.go
+```
 
-   ```sh
-   npx create-expo-app@latest --template react-navigation/template
-   ```
+2. Install dependencies:
 
-2. Edit the `app.json` file to configure the `name`, `slug`, `scheme` and bundle identifiers (`ios.bundleIdentifier` and `android.bundleIdentifier`) for your app.
+```sh
+pnpm install
+```
 
-3. Edit the `src/App.tsx` file to start working on your app.
+3. Run the tests:
 
-## Running the app
+```sh
+pnpm test
+```
 
-- Install the dependencies:
+4. Build and run iOS and Android development builds:
 
-  ```sh
-  npm install
-  ```
+```sh
+pnpm ios
+# or
+pnpm android
+```
 
-- Start the development server:
+If you already built the app, and the development server is not running, just start it:
 
-  ```sh
-  npm start
-  ```
+```sh
+pnpm start
+```
+In the terminal running the development server, press `i` to open the iOS simulator, `a` to open the Android device or emulator, or `w` to open the web browser.
 
-- Build and run iOS and Android development builds:
+## The server
 
-  ```sh
-  npm run ios
-  # or
-  npm run android
-  ```
+The server is a simple Go server that provides a REST API and WebSocket for the app.
+But, have in mind that the server is not production ready. It has some malfunctions.
 
-- In the terminal running the development server, press `i` to open the iOS simulator, `a` to open the Android device or emulator, or `w` to open the web browser.
+ - The REST API returns some repeated attachments (duplicated ID's).
+ - Also, always returns an entire list of documents, even when a new one is created, and the created one is not included.
+ - The WebSocket, when connected is constantly sending messages, randomly on five seconds interval. It should send messages only when a new document is created.
 
-## Notes
+ With this in mind, I built a simple notification system with context api + toast to notify the user when a new document is created.
 
-This project uses a [development build](https://docs.expo.dev/develop/development-builds/introduction/) and cannot be run with [Expo Go](https://expo.dev/go). To run the app with Expo Go, edit the `package.json` file, remove the `expo-dev-client` package and `--dev-client` flag from the `start` script. However, Edge-to-edge won't work on Expo Go.
 
-We highly recommend using the development builds for normal development and testing.
+## Third party libraries
 
-The `ios` and `android` folder are gitignored in the project by default as they are automatically generated during the build process ([Continuous Native Generation](https://docs.expo.dev/workflow/continuous-native-generation/)). This means that you should not edit these folders directly and use [config plugins](https://docs.expo.dev/config-plugins/) instead. However, if you need to edit these folders, you can remove them from the `.gitignore` file so that they are tracked by git.
+- [React Native Actions Sheet](https://github.com/ammarahm-ed/react-native-actions-sheet)
+The reason: Smooth experience for bottom sheets with Reanimated and Gesture Handler integration working out of the box on both iOS and Android. For me it's a better choice than built one from scratch with reanimated for example.
 
-## Resources
 
-- [React Navigation documentation](https://reactnavigation.org/)
-- [Expo documentation](https://docs.expo.dev/)
-
----
-
-Demo assets are from [lucide.dev](https://lucide.dev/)
