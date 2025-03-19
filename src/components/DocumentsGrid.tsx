@@ -1,25 +1,14 @@
-import { useState } from 'react';
 import { ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { DocsListType } from '@/services';
 import { CardGrid } from '@/components/CardGrid';
 
 interface DocumentsGridProps {
   documents: DocsListType[];
+  onRefresh: () => void;
+  refreshing: boolean;
 }
 
-export function DocumentsGrid({ documents }: DocumentsGridProps) {
-  const [refreshing, setRefreshing] = useState(false);
-
-  const onRefresh = () => {
-    setRefreshing(true);
-    setTimeout(() => {
-      // TODO: Fetch new data
-      // Set Skip / Limit
-      console.log('Refreshed');
-      setRefreshing(false);
-    }, 2000);
-  };
-
+export function DocumentsGrid({ documents, onRefresh, refreshing }: DocumentsGridProps) {
   return (
     <ScrollView
       contentContainerStyle={styles.scrollView}

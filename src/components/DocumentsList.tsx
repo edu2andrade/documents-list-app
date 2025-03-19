@@ -1,25 +1,14 @@
 import { View, FlatList, StyleSheet, RefreshControl } from 'react-native';
 import { DocsListType } from '@/services';
 import { CardList } from '@/components/CardList';
-import { useState } from 'react';
 
 interface DocumentsListProps {
   documents: DocsListType[];
+  onRefresh: () => void;
+  refreshing: boolean;
 }
 
-export function DocumentsList({ documents }: DocumentsListProps) {
-  const [refreshing, setRefreshing] = useState(false);
-
-  const onRefresh = () => {
-    setRefreshing(true);
-    setTimeout(() => {
-      // TODO: Fetch new data
-      // Set Skip / Limit
-      console.log('Refreshed');
-      setRefreshing(false);
-    }, 2000);
-  };
-
+export function DocumentsList({ documents, onRefresh, refreshing }: DocumentsListProps) {
   const Items = ({ item }: { item: DocsListType }) => (
     <View style={styles.items}>
       <CardList document={item} />

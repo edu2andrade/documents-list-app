@@ -31,30 +31,28 @@ export function Home() {
     setSortOption(option);
   };
 
+  // Using the document service with dependency injection
+  const fetchDocuments = async (signal?: AbortSignal) => {
+    try {
+      setIsLoading(true);
+      const httpClient = new FetchHttpClient();
+      const documentService = new DocumentService(httpClient);
+      const documents = await documentService.getDocuments(signal);
+
+      if (!signal?.aborted) {
+        setDocsList(documents);
+      }
+    } catch (error) {
+      if (!signal?.aborted) console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     const abortController = new AbortController();
     const signal = abortController.signal;
-
-    // Using the document service with dependency injection
-    const fetchDocuments = async () => {
-      try {
-        setIsLoading(true);
-        const httpClient = new FetchHttpClient();
-        const documentService = new DocumentService(httpClient);
-        const documents = await documentService.getDocuments(signal);
-
-        if (!signal.aborted) {
-          setDocsList(documents);
-        }
-      } catch (error) {
-        if (!signal.aborted) console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchDocuments();
-
+    fetchDocuments(signal);
     return () => abortController.abort();
   }, []);
 
@@ -80,9 +78,9 @@ export function Home() {
     }
 
     return viewState === 'grid' ? (
-      <DocumentsGrid documents={sortedDocuments} />
+      <DocumentsGrid documents={sortedDocuments} onRefresh={fetchDocuments} refreshing={isLoading} />
     ) : (
-      <DocumentsList documents={sortedDocuments} />
+      <DocumentsList documents={sortedDocuments} onRefresh={fetchDocuments} refreshing={isLoading} />
     );
   }, [viewState, sortedDocuments]);
 

@@ -1,5 +1,5 @@
 import { View, StyleSheet, Text } from 'react-native';
-import { formatDate } from '@/utils';
+import { formatRelativeTime } from '@/utils';
 import { Ionicons } from '@expo/vector-icons';
 import { DocsListType } from '@/services';
 
@@ -11,7 +11,7 @@ export function CardList({ document }: { document: DocsListType }) {
           <Text style={styles.h1}>{document.Title}</Text>
           <Text style={styles.detail}>{document.Version}</Text>
         </View>
-        <Text style={styles.detail}>{formatDate(document.CreatedAt)}</Text>
+        <Text style={styles.detail}>{formatRelativeTime(document.CreatedAt)}</Text>
       </View>
       {/* Content */}
       <View style={styles.content}>
